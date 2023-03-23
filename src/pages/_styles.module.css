@@ -1,0 +1,14 @@
+.login-form-button {
+    display:block;
+    width: 100%;
+    margin-top: 1.5rem;
+}
+.login-form {
+    width: 25vw;
+    padding: min(1rem, 1.5rem);
+    background-color: #ffffff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+

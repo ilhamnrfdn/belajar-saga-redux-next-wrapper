@@ -20,7 +20,7 @@ export const resultUserData = ({...params}) =>{
 //   console.log(params.data)
   return {
     type: actionsUserList.RES_USER_LIST,
-    ...params
+    data: params
   }
 }
 

@@ -1,10 +1,10 @@
 import { combineReducers } from "redux"
 
-import userReducers from "./list/store"
+import userReducers from "../list/users"
 
 const rootReducer = combineReducers({
   // Define a top-level state field named `todos`, handled by `todosReducer`
-  user: userReducers
+  userReducers
 })
 
 export default rootReducer

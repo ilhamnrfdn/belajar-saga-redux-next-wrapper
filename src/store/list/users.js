@@ -17,7 +17,7 @@ export default function userReducers(state = initialState, action) {
     }
   }
   case actionsUserList.RES_USER_LIST:{
-    console.log("store =>" , action.data)
+    // console.log("store =>" , action.data)
     return {
       ...state,
       users:action.data

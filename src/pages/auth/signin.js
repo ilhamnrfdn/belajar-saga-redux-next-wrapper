@@ -3,7 +3,15 @@ import Head from "next/head";
 import styles from "./_styles.module.css"
 
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Layout, Button, Checkbox, Form, Input } from "antd";
+import { Layout, Button, Checkbox, Form, Input,
+  notification,
+
+} from "antd";
+import { useRouter } from "next/router"
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+
+import { signIn } from "next-auth/react";
 const { Content } = Layout;
 
 const contentStyle = {
@@ -27,10 +35,35 @@ let title = "LOGIN CREDENTIALS"
 // const { useToken } = theme;
 
 export default function Home() {
+  const router = useRouter()
+  const session = useSession()
   // const { token } = useToken();
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const onFinish = async (values) => {
+    try {
+      const login = await signIn("credentials", {
+        username: values.username,
+        password: values.password,
+        redirect:false
+      })
+      if(login.status === 401){
+        notification.error({ description: "id atau password salah" });
+      }
+      else {
+
+        router.push("/list-data")
+      }
+      console.log("login with next auth: ", login);
+    } catch (error) {
+      notification.error({ description: "error" });
+    }
   };
+  
+  // useEffect(()=>{
+  //   if(session.data != null){
+  //     router.push("/list-data")
+  //   }
+  // },[session.data])
+
   return (
     <>
       <Head>

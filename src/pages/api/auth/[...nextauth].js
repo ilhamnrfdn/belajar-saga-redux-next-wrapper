@@ -1,11 +1,15 @@
 import NextAuth from "next-auth"
+import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials";
-
 export const authOptions = {
 
   // Configure one or more authentication providers
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET
+    }),
     GithubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
@@ -22,16 +26,18 @@ export const authOptions = {
         // password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
-        console.log(credentials)
+        // console.log("kredensial",credentials)
+        // console.log(req)
         // Add logic here to look up the user from the credentials supplied
-        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
-    
-        if (user) {
+        const {username, password} = credentials
+       
+        if (username === "ilhamnrachman" && password === "123") {
           // Any object returned will be saved in `user` property of the JWT
-          return user
+          return credentials
         } else {
+
           // If you return null then an error will be displayed advising the user to check their details.
-          return null
+          throw new Error("password atau id salah")
     
           // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
         }
@@ -39,9 +45,10 @@ export const authOptions = {
     })
     // ...add more providers here
   ],
-  pages: {
-    signIn: "/belajar/auth/signin",
-  }
+  
+//   pages: {
+//     signIn: "/belajar/auth/signin",
+//   }
 }
 
 export default NextAuth(authOptions)

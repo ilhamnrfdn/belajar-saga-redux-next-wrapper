@@ -1,8 +1,11 @@
 import Head from "next/head";
 // import Image from "next/image";
-import { signIn } from "next-auth/react"
+import { signIn, useSession, getSession} from "next-auth/react"
 
 import { Layout, Button } from "antd";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+// import { redirect } from "next/dist/server/api-utils";
 const { Content } = Layout;
 
 const contentStyle = {
@@ -26,7 +29,20 @@ let title = "LOGIN CREDENTIALS"
 // const { useToken } = theme;
 
 export default function Home() {
-  // const { token } = useToken();
+  const session = useSession()
+  const router= useRouter()
+  useEffect(()=>{
+    if(session.data != null){
+      router.push("/list-data")
+    }
+  },[])
+
+  const signWithGoogle = ()=> {
+    signIn("google", {callbackUrl: `${process.env.NEXT_PUBLIC_HOST_LOCAL}/list-data`})
+  }
+  const signWithGithub = ()=> {
+    signIn("github", {callbackUrl: `${process.env.NEXT_PUBLIC_HOST_LOCAL}/list-data`})
+  }
   return (
     <>
       <Head>
@@ -39,8 +55,9 @@ export default function Home() {
     
       <Layout style={layoutContent}>
         <Content style={contentStyle}>
-          <Button onClick={()=> signIn()}>SIGN WITH CREDENTIALS</Button>
-          <Button onClick={()=> signIn("google")}>SIGN WITH GOOGLE</Button>
+          <Button><a href="/belajar/auth/signin">SIGN WITH CREDENTIALS</a></Button>
+          <Button onClick={signWithGoogle}>SIGN WITH GOOGLE</Button>
+          <Button onClick={signWithGithub}>SIGN WITH GITHUB</Button>
 
         </Content>
       </Layout>
@@ -48,3 +65,24 @@ export default function Home() {
   )
 }
 
+
+
+
+
+export const getServerSideProps = (async ({ req}) => {
+  //   console.log("2. Page.getServerSideProps uses the store to dispatch things");
+  const session = await getSession({req})
+  if(session){
+    return {
+      redirect: {
+        destination: "/list-data"
+      }
+    }
+  }
+
+  return {
+    props:{
+      // session
+    }
+  }
+});

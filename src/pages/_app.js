@@ -3,9 +3,10 @@ import { wrapper } from "@/store"
 import {Provider} from "react-redux";
 import { SessionProvider } from "next-auth/react"
 
-export default function App({ Component, session ,...rest}) {
+export default function App({ Component,...rest}) {
   const {store, props} = wrapper.useWrappedStore(rest);
-  return <SessionProvider session={session} basePath={`${process.env.NEXT_PUBLIC_HOST_LOCAL}/belajar/api/auth`}> 
+  // console.log("props", props)
+  return <SessionProvider session={props.pageProps.session} basePath={`${process.env.NEXT_PUBLIC_HOST_LOCAL}/api/auth`}> 
     <Provider store={store}>
       <Component {...props.pageProps} />
     </Provider>

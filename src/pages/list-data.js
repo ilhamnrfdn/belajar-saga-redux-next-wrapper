@@ -1,10 +1,12 @@
 import { loadUserData } from "@/store/rootsaga/action";
 import { wrapper } from "@/store";
 import {END} from "redux-saga";
+import { useSession, getSession, signOut} from "next-auth/react";
 // import { useEffect } from "react";
 
 export default function ListData ({...props}){
-  // useEffect(()=>{
+  const {data:session} = useSession()
+  console.log(session)
     
   //   const hello = async () => {
       
@@ -30,15 +32,24 @@ export default function ListData ({...props}){
   // },[])
 
 
-  console.log(props)
   return <>
-        ini data
+        nama: {session.user.name} <br/>
+        email: {session.user.email}<br/>
+    <button onClick={()=> signOut()}>signout</button>
   </>
 }
 
 
-export const getServerSideProps = wrapper.getServerSideProps((store)=> async ({ }) => {
-//   console.log("2. Page.getServerSideProps uses the store to dispatch things");
+export const getServerSideProps = wrapper.getServerSideProps((store)=> async ({ req}) => {
+  //   console.log("2. Page.getServerSideProps uses the store to dispatch things");
+  const session = await getSession({req})
+  if(!session){
+    return {
+      redirect: {
+        destination: "/"
+      }
+    }
+  }
   await store.dispatch(loadUserData({
     page: 1,
     limit: 10
@@ -52,7 +63,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store)=> async ({ 
 
   return {
     props:{
-      
+      session
     }
   }
 });

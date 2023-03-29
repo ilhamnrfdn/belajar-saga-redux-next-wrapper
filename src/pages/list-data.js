@@ -2,12 +2,20 @@ import { loadUserData } from "@/store/rootsaga/action";
 import { wrapper } from "@/store";
 import {END} from "redux-saga";
 import { useSession, getSession, signOut} from "next-auth/react";
-// import { useEffect } from "react";
+import { useRouter } from "next/router";
+
 
 export default function ListData ({...props}){
-  const {data:session} = useSession()
-  console.log(session)
-    
+
+  // client side RENDERING
+  const router= useRouter()
+  const { status, data:session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      // The user is not authenticated, handle it here.
+      router.push("/")
+    },
+  })
   //   const hello = async () => {
       
   //     try {
@@ -30,7 +38,11 @@ export default function ListData ({...props}){
   //   }
   //   s3()
   // },[])
-
+  
+  // CLIENT SIDE RENDERING
+  if (status === "loading") {
+    return "Loading or not authenticated..."
+  }
 
   return <>
         nama: {session.user.name} <br/>
@@ -40,16 +52,16 @@ export default function ListData ({...props}){
 }
 
 
-export const getServerSideProps = wrapper.getServerSideProps((store)=> async ({ req}) => {
+export const getServerSideProps = wrapper.getServerSideProps((store)=> async ({}) => {
   //   console.log("2. Page.getServerSideProps uses the store to dispatch things");
-  const session = await getSession({req})
-  if(!session){
-    return {
-      redirect: {
-        destination: "/"
-      }
-    }
-  }
+  // const session = await getSession({req})
+  // if(!session){
+  //   return {
+  //     redirect: {
+  //       destination: "/"
+  //     }
+  //   }
+  // }
   await store.dispatch(loadUserData({
     page: 1,
     limit: 10
@@ -63,7 +75,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store)=> async ({ 
 
   return {
     props:{
-      session
+      // session
     }
   }
 });

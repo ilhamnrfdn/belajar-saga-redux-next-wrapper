@@ -43,7 +43,7 @@ export default function Home() {
       const login = await signIn("credentials", {
         username: values.username,
         password: values.password,
-        redirect:false
+        redirect:false // apabila username /pasword salah maka tidak akan ke redirect
       })
       if(login.status === 401){
         notification.error({ description: "id atau password salah" });

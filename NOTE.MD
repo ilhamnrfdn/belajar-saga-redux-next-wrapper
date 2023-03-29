@@ -13,5 +13,5 @@ note: gaktau kenapa kalo pake url dengan port selain 3000 kaga bisa konek.
 - saat menggunakan getSession serverside jangan lupa untuk menempatkan session ke dalam return propsnya, karena jika tidak ketika kita ingin menggunakan data session di client data tidak bisa ke angkut.
 1. set up sessionProvider untuk wrap component di dalam file _app
 2. buat file [...nextauth].js didalam file api/auth dan lihat [dokumentasi] selanjutnya: https://next-auth.js.org/getting-started/example
-3. untuk mengambil data session dari client menggunakan useSession, sedangkan untuk mengambil data session dari server menggunakan getSession dan harus dipanggil didalam serversideprops
+3. untuk mengambil data session dari client menggunakan useSession, sedangkan untuk mengambil data session dari server bisa juga menggunakan getSession dan harus dipanggil didalam serversideprops, akan tetapi next-auth lebih merekomendasi menggunakan getServerSession
 

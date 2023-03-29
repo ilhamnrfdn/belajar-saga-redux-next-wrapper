@@ -2,20 +2,20 @@ import { loadUserData } from "@/store/rootsaga/action";
 import { wrapper } from "@/store";
 import {END} from "redux-saga";
 import { useSession, getSession, signOut} from "next-auth/react";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 
 export default function ListData ({...props}){
-  const { status, data:session } = useSession()
+
   // client side RENDERING
-  // const router= useRouter()
-  // const { status, data:session } = useSession({
-  //   required: true,
-  //   onUnauthenticated() {
-  //     // The user is not authenticated, handle it here.
-  //     router.push("/")
-  //   },
-  // })
+  const router= useRouter()
+  const { status, data:session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      // The user is not authenticated, handle it here.
+      router.push("/")
+    },
+  })
   console.log(session)
   //   const hello = async () => {
       
@@ -54,17 +54,16 @@ export default function ListData ({...props}){
 }
 
 
-export const getServerSideProps = wrapper.getServerSideProps((store)=> async ({req}) => {
+export const getServerSideProps = wrapper.getServerSideProps((store)=> async ({}) => {
   //   console.log("2. Page.getServerSideProps uses the store to dispatch things");
-  const session = await getSession({req})
-  if(!session){
-    return {
-      redirect: {
-        destination: "/"
-      }
-    }
-  }
-  console.log(session)
+  // const session = await getSession({req})
+  // if(!session){
+  //   return {
+  //     redirect: {
+  //       destination: "/"
+  //     }
+  //   }
+  // }
   await store.dispatch(loadUserData({
     page: 1,
     limit: 10
@@ -72,13 +71,12 @@ export const getServerSideProps = wrapper.getServerSideProps((store)=> async ({r
 
   store.dispatch(END);
   await store.sagaTask.toPromise();
-  
   //   console.log(store.getState())
 
 
   return {
     props:{
-      session
+      // session
     }
   }
 });

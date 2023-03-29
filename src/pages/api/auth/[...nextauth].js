@@ -2,6 +2,10 @@ import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials";
+import connectMongo from "Database/server"
+import Users from "Model/Schema"
+import {compare} from "bcryptjs"
+
 export const authOptions = {
 
   // Configure one or more authentication providers
@@ -21,26 +25,30 @@ export const authOptions = {
       // You can specify which fields should be submitted, by adding keys to the `credentials` object.
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
-      credentials: {
-        // username: { label: "Username", type: "text", placeholder: "jsmith" },
-        // password: { label: "Password", type: "password" }
-      },
       async authorize(credentials, req) {
-        // console.log("kredensial",credentials)
+        connectMongo().catch(function(err){ res.json({error:"Connection Failed!"})})
+        
         // console.log(req)
         // Add logic here to look up the user from the credentials supplied
         const {username, password} = credentials
-       
-        if (username === "ilhamnrachman" && password === "123") {
-          // Any object returned will be saved in `user` property of the JWT
-          return credentials
-        } else {
-
+        const findUser = await Users.findOne({username})
+        // check username
+        if (!findUser) {
           // If you return null then an error will be displayed advising the user to check their details.
-          throw new Error("password atau id salah")
-    
           // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+          throw new Error("username tidak ditemukan")
+
+        } 
+    
+        // CHECK PASSWORD 
+        // parameter pertama password dari kredensial, paramter kedua password database
+        const checkPassword = await compare(password, findUser.password)
+        if(!checkPassword || findUser.username !== username) {
+          throw new Error("username atau password tidak sama")
         }
+        // console.log(findUser)
+        // Any object returned will be saved in `user` property of the JWT
+        return findUser
       }
     })
     // ...add more providers here
@@ -52,7 +60,19 @@ export const authOptions = {
       // Allows callback URLs on the same origin
       else if (new URL(url).origin === baseUrl) return url
       return baseUrl
-    }
+    },
+    // async session({ session}) {
+    //   if (!session) return;
+    //   connectMongo().catch(function(err){ res.json({error:"Connection Failed!"})})
+    //   const findUser = await Users.findOne({username})
+
+    //   return {session: 
+    //   {
+    //     user: {
+    //       username: findUser.username
+    //     }
+    //   }}
+    // }
   }
 //   pages: {
 //     signIn: "/belajar/auth/signin",

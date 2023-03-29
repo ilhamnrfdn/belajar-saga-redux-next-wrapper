@@ -45,13 +45,16 @@ export default function Home() {
         password: values.password,
         redirect:false // apabila username /pasword salah maka tidak akan ke redirect
       })
-      if(login.status === 401){
-        notification.error({ description: "id atau password salah" });
-      }
-      else {
-
+      console.log(login)
+      if(login.ok) {
         router.push("/list-data")
       }
+      // if(login.status === 401){
+      //   notification.error({ description: "id atau password salah" });
+      // }
+      // else {
+      //   router.push("/list-data")
+      // }
       console.log("login with next auth: ", login);
     } catch (error) {
       notification.error({ description: "error" });

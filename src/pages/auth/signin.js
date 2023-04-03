@@ -1,13 +1,13 @@
 import Head from "next/head";
 // import Image from "next/image";
-import styles from "./_styles.module.css"
+import styles from "./_styles.module.css";
 
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Layout, Button, Checkbox, Form, Input,
   notification,
 
 } from "antd";
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 
@@ -29,14 +29,14 @@ const contentStyle = {
 
 const layoutContent = {
   minHeight: "100vh",
-}
+};
 
-let title = "LOGIN CREDENTIALS"
+let title = "LOGIN CREDENTIALS";
 // const { useToken } = theme;
 
 export default function Home() {
-  const router = useRouter()
-  const session = useSession()
+  const router = useRouter();
+  const session = useSession();
   // const { token } = useToken();
   const onFinish = async (values) => {
     try {
@@ -44,10 +44,10 @@ export default function Home() {
         username: values.username,
         password: values.password,
         redirect:false // apabila username /pasword salah maka tidak akan ke redirect
-      })
-      console.log(login)
+      });
+      console.log(login);
       if(login.ok) {
-        router.push("/list-data")
+        router.push("/list-data");
       }
       // if(login.status === 401){
       //   notification.error({ description: "id atau password salah" });
@@ -132,6 +132,6 @@ export default function Home() {
         </Content>
       </Layout>
     </>
-  )
+  );
 }
 

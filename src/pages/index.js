@@ -1,16 +1,16 @@
 import Head from "next/head";
 // import Image from "next/image";
 import { signIn, getSession} from "next-auth/react"
+import Link from "next/link";
+import { Layout, Button, Row, Col } from "antd";
+import styles from "./_styles.module.css"
 
-import { Layout, Button } from "antd";
-
-// import { redirect } from "next/dist/server/api-utils";
 const { Content } = Layout;
 
 const contentStyle = {
   textAlign: "center",
   minHeight: 120,
-  lineHeight: "120px",
+  lineHeight: "40px",
   color: "#fff",
   backgroundColor: "#108ee9",
   position: "relative",
@@ -23,6 +23,7 @@ const contentStyle = {
 const layoutContent = {
   minHeight: "100vh",
 }
+
 
 let title = "LOGIN CREDENTIALS"
 // const { useToken } = theme;
@@ -54,9 +55,20 @@ export default function Home() {
     
       <Layout style={layoutContent}>
         <Content style={contentStyle}>
-          <Button><a href="/auth/signin">SIGN WITH CREDENTIALS</a></Button>
-          <Button onClick={signWithGoogle}>SIGN WITH GOOGLE</Button>
-          <Button onClick={signWithGithub}>SIGN WITH GITHUB</Button>
+          <div className={styles["Box-auth"]}>
+            <Row>
+              <Col span={24}>
+                <Button><Link href="/auth/signin">SIGN WITH CREDENTIALS</Link></Button>
+              </Col>
+              <Col span={12}>
+                <Button onClick={signWithGoogle}>SIGN WITH GOOGLE</Button>
+              </Col>
+              <Col span={12}>
+                <Button onClick={signWithGithub}>SIGN WITH GITHUB</Button>
+              </Col>
+
+            </Row>
+          </div>
 
         </Content>
       </Layout>
@@ -72,7 +84,7 @@ export const getServerSideProps = (async ({ req}) => {
   if(session){
     return {
       redirect: {
-        destination: "/list-data"
+        destination: "/group"
       }
     }
   }

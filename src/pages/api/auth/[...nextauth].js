@@ -26,7 +26,7 @@ export const authOptions = {
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       async authorize(credentials, req) {
-        connectMongo().catch(function(err){ res.json({error:"Connection Failed!"})})
+        connectMongo().catch(function(err){ console.log({error:"Connection Failed!"})})
         
         // console.log(req)
         // Add logic here to look up the user from the credentials supplied

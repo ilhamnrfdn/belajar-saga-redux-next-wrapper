@@ -2,9 +2,29 @@
   // "extends": ["next/core-web-vitals", "prettier"],
   "extends": "next/core-web-vitals",
   "rules": {
-    // "semi": ["error", "always"],
     "quotes": ["error", "double"],
     "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
-    "indent": ["error", 2]
+    "indent": ["error", 2],
+    "semi": ["error", "always"],
+  //   "max-len": "off",
+  //   "padded-blocks": ["error", "always"],
+  //   "implicit-arrow-linebreak": ["error", "beside"],
+  // "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+  // "react/jsx-props-no-spreading": "off",
+  // "react/jsx-indent": [2, "tab"],
+  // "react/jsx-indent-props": [2, "tab"],
+  "no-tabs": 0,
+  // "import/no-unresolved": "off",
+  // "react/react-in-jsx-scope": "off",
+  // "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+  // "prefer-template": "error",
+  // "react/no-unknown-property": [
+  //  2,
+  //  {
+  //   "ignore": [
+  //    "jsx", "custom-element",
+  //   ],
+  //  },
+  // ],
   }
 }

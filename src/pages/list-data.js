@@ -1,22 +1,28 @@
+// STORING DADTA
 import { loadUserData } from "@/store/rootsaga/action";
 import { wrapper } from "@/store";
 import {END} from "redux-saga";
-import { useSession, getSession, signOut} from "next-auth/react";
-import { useRouter } from "next/router";
 
+// components
+import LayoutBody from "@/layout/layout";
+
+// VARS GLOBAL
+import vars from "@/global/vars";
+
+// import { useSession, getSession, signOut} from "next-auth/react";
+// import { useRouter } from "next/router";
 
 export default function ListData ({...props}){
-
   // client side RENDERING
-  const router= useRouter()
-  const { status, data:session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      // The user is not authenticated, handle it here.
-      router.push("/")
-    },
-  })
-  console.log(session)
+  // const router= useRouter()
+  // const { status, data:session } = useSession({
+  //   required: true,
+  //   onUnauthenticated() {
+  //     // The user is not authenticated, handle it here.
+  //     router.push("/")
+  //   },
+  // })
+  // console.log(session)
   //   const hello = async () => {
       
   //     try {
@@ -41,15 +47,16 @@ export default function ListData ({...props}){
   // },[])
   
   // CLIENT SIDE RENDERING
-  if (status === "loading") {
-    return "Loading or not authenticated..."
-  }
+  // if (status === "loading") {
+  //   return "Loading or not authenticated..."
+  // }
 
   return <>
     {/* username: {session.user.username} <br/> */}
-        nama: {session.user.name} <br/>
-        email: {session.user.email}<br/>
-    <button onClick={()=> signOut()}>signout</button>
+    <LayoutBody title={vars.HEAD_TITLE.group_list} subtitle={vars.SUB_HEADER.group_list}>
+       GROUP LIST
+    </LayoutBody>
+        
   </>
 }
 
@@ -64,6 +71,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store)=> async ({}
   //     }
   //   }
   // }
+  
   await store.dispatch(loadUserData({
     page: 1,
     limit: 10
